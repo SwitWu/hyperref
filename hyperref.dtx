@@ -4,7 +4,7 @@
 % 1995-2001 Sebastian Rahtz, with portions written by David Carlisle and Heiko Oberdiek,
 % 2001-2015 Heiko Oberdiek.
 % 2016-2019 Oberdiek Package Support Group
-% 2019-2023 LaTeX Project
+% 2019-2024 LaTeX Project
 %      https://github.com/latex3/hyperref/issues
 %
 % This file is part of the `Hyperref Bundle'.
@@ -51,7 +51,7 @@
 %<puvnenc>\ProvidesFile{puvnenc.def}
 %<puarenc>\ProvidesFile{puarenc.def}
 %<psdextra>\ProvidesFile{psdextra.def}
-%<!none&!packageEnd>  [2023-11-26 v7.01g %
+%<!none&!packageEnd>  [2024-01-20 v7.01h %
 %<package>  Hypertext links for LaTeX]
 %<nohyperref>  Dummy hyperref (SR)]
 %<driver>  Hyperref documentation driver file]
@@ -596,13 +596,11 @@
 % change 2023-11-26: no longer require expl3, we assume kernel is new enough.
 %    \begin{macrocode}
 \RequirePackage{iftex}[2019/10/24]
-\RequirePackage{infwarerr}[2010/04/08]
 \RequirePackage{keyval}[1997/11/10]
 \RequirePackage{kvsetkeys}[2007/09/29]
 \RequirePackage{kvdefinekeys}[2011/04/07]
 \RequirePackage{pdfescape}[2007/11/11]
 \RequirePackage{hycolor}
-\RequirePackage{letltxmacro}[2008/06/13]
 \RequirePackage{auxhook}[2009/12/14]
 \RequirePackage{nameref}[2012/07/28]
 \RequirePackage{etoolbox}
@@ -9483,7 +9481,6 @@
 %    Some low-level commands:
 %    \begin{macrocode}
 %<*nohyperref>
-\RequirePackage{letltxmacro}[2008/06/13]
 \let\hyper@@anchor\@gobble
 \def\hyper@link#1#2#3{#3}%
 \let\hyper@anchorstart\@gobble
@@ -9511,7 +9508,7 @@
 \let\hyperdef\@gobbletwo
 \let\hyperlink\@gobble
 \let\hypertarget\@gobble
-\def\hyperref{%
+\protected\def\hyperref{%
   \@ifnextchar[\@gobbleopt{\expandafter\@gobbletwo\@gobble}%
 }
 \long\def\@gobbleopt[#1]{}
@@ -11018,6 +11015,8 @@
  {%
   \@ifundefined{deferred@thm@head}{}
    {%
+    \let\Hy@deferred@thm@head\deferred@thm@head
+    \def\deferred@thm@head#1{\Hy@deferred@thm@head{#1}}%
     \renewcommand\Hy@theorem@makelinktarget[1]
      {%
       \AddToHookNext{cmd/deferred@thm@head/before}
